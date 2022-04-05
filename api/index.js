@@ -21,7 +21,7 @@ const findNearestStops = (params) =>
     axios
         .post(`${SUPABASE_URL}/rest/v1/rpc/find_nearest_stops`, params, {
             headers: {
-                Authrization: `Bearer ${SUPABASE_SECRET}`,
+                Authorization: `Bearer ${SUPABASE_SECRET}`,
                 apikey: SUPABASE_SECRET
             }
         })
