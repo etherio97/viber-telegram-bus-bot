@@ -68,16 +68,16 @@ app.post('/api', json(), async (req, res) => {
             let results = await findNearestStops(params);
 
             results = results.map(result => ({
-                ...results,
+                ...result,
                 distance: calculateDistance(result, coords)
             })).sort((a, b) => a.distance - b.distance);
 
             console.log('lat:%s, lng:%s (%d) stops', coords.latitude, coords.latitude, results.length);
 
             if (results.length) {
-                let text = `မှတ်တိုင် ${results.length} ခု ရှာတွေ့ပါတယ်။ _(၁ ကီလိုမီတာအတွင်း)_`;
+                let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)}) ခု ရှာတွေ့ပါတယ်။ _(၁ ကီလိုမီတာအတွင်း)_`;
 
-                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(i + 1)}။ *${name}* \`${distance.toFixed(0)}မီတာအကွာ\``).join('\n');
+                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(i)}။ *${name}* \`${toBurmeseNumber(distance.toFixed(0))}မီတာအကွာ\``).join('\n');
 
                 await sendMessage(user.id, {
                     text,
