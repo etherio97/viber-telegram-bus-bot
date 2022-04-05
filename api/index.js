@@ -17,9 +17,26 @@ const getRadius = (radius, { latitude, longitude }) => {
     };
 };
 
-const findNearestStops = ({ min_lat, max_lat, min_lng, max_lng }) => axios.post(`${SUPABASE_URL}/rest/v1/rpc/find_nearest_stops`, { min_lat, max_lat, min_lng, max_lng }, { headers: { Authrization: `Bearer ${SUPABASE_SECRET}`, apikey: SUPABASE_SECRET } }).then(({ data }) => data);
+const findNearestStops = (data) => {
+    let url = `${SUPABASE_URL}/rest/v1/rpc/find_nearest_stops`;
+    console.log({ url, data });
+    return axios
+        .post(url, data, {
+            headers: {
+                Authrization: `Bearer ${SUPABASE_SECRET}`,
+                apikey: SUPABASE_SECRET
+            }
+        })
+        .then(({ data }) => data);
+}
 
-const sendMessage = (chat_id, payload = {}) => axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, { chat_id, ...payload }).then(({ data }) => data);
+const sendMessage = (chat_id, payload = {}) =>
+    axios
+        .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            chat_id,
+            ...payload
+        })
+        .then(({ data }) => data);
 
 
 app.post('/api', json(), async (req, res) => {
