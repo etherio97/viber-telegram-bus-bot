@@ -77,7 +77,7 @@ app.post('/api', json(), async (req, res) => {
             if (results.length) {
                 let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)} ခု ရှာတွေ့ပါတယ်။\n\n`;
 
-                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(1 + i)}။ ${name} _မီတာ ${toBurmeseNumber(distance.toFixed(0))} အကွာ_`).join('\n');
+                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(1 + i)}။ *${name}*   _မီတာ ${toBurmeseNumber(distance.toFixed(0))} အကွာ_`).join('\n');
 
                 await sendMessage(user.id, {
                     text,
