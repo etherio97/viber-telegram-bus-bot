@@ -75,9 +75,9 @@ app.post('/api', json(), async (req, res) => {
             console.log('lat:%s, lng:%s (%d) stops', coords.latitude, coords.latitude, results.length);
 
             if (results.length) {
-                let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)}) ခု ရှာတွေ့ပါတယ်။ _(၁ ကီလိုမီတာအတွင်း)_`;
+                let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)}) ခု ရှာတွေ့ပါတယ်။ _(၁ ကီလိုမီတာအတွင်း)_\n\n`;
 
-                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(i)}။ *${name}* \`${toBurmeseNumber(distance.toFixed(0))}မီတာအကွာ\``).join('\n');
+                text += results.map(({ name, distance }, i) => `${toBurmeseNumber(1 + i)}။ *${name}* \`${toBurmeseNumber(distance.toFixed(0))}မီတာအကွာ\``).join('\n');
 
                 await sendMessage(user.id, {
                     text,
