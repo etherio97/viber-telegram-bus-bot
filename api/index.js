@@ -17,18 +17,15 @@ const getRadius = (radius, { latitude, longitude }) => {
     };
 };
 
-const findNearestStops = (data) => {
-    let url = `${SUPABASE_URL}/rest/v1/rpc/find_nearest_stops`;
-    console.log({ url, data });
-    return axios
-        .post(url, data, {
+const findNearestStops = (data) =>
+    axios
+        .post(`${SUPABASE_URL}/rest/v1/rpc/find_nearest_stops`, data, {
             headers: {
                 Authrization: `Bearer ${SUPABASE_SECRET}`,
                 apikey: SUPABASE_SECRET
             }
         })
         .then(({ data }) => data);
-}
 
 const sendMessage = (chat_id, payload = {}) =>
     axios
@@ -59,6 +56,8 @@ app.post('/api', json(), async (req, res) => {
         } else if (message.location) {
             let params = getRadius(1200, message.location);
             let results = await findNearestStops(params);
+            console.log('parmas', parmas);
+            console.log('results', results);
             if (results.length) {
                 let text = results.map(({ name }) => `- ${name}`).join('\n');
                 await sendMessage(user.id, {
