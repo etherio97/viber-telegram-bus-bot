@@ -25,16 +25,32 @@ const sendMessage = (chat_id, payload = {}) => axios.post(`https://api.telegram.
 app.post('/api', json(), async (req, res) => {
     try {
         const { message } = req.body;
-
-        if (message.location) {
+        const user = message.chat || message.from;
+        if (message.text === '/start') {
+            await sendMessage(user.id, {
+                text: 'Send me your location to find nearest bus stops',
+                reply_markup: {
+                    keyboard: [
+                        [
+                            { text: "Send your location", request_location: true }
+                        ]
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: true
+                }
+            });
+        } else if (message.location) {
             let params = getRadius(600, message.location);
             let results = await findNearestStops(params);
-
             if (results.length) {
                 let text = results.map(({ name }) => `- ${name}`).join('\n');
-                await sendMessage((message.chat || message.from).id, { text: `Found ${results.length} stops near your locatoin\n\n${text}` });
+                await sendMessage(user.id, {
+                    text: `Found ${results.length} stops near your locatoin\n\n${text}`
+                });
             } else {
-                await sendMessage((message.chat || message.from).id, { text: 'No bus stops found near your location' });
+                await sendMessage(user.id, {
+                    text: 'No bus stops found near your location'
+                });
             }
         }
 
