@@ -57,16 +57,18 @@ app.post('/api', json(), async (req, res) => {
                 }
             });
         } else if (message.location) {
-            let params = getRadius(600, message.location);
+            let params = getRadius(1200, message.location);
             let results = await findNearestStops(params);
             if (results.length) {
                 let text = results.map(({ name }) => `- ${name}`).join('\n');
                 await sendMessage(user.id, {
-                    text: `Found ${results.length} stops near your locatoin\n\n${text}`
+                    text: `Found ${results.length} stops near your location _(within 1km)_\n\n${text}`,
+                    parse_mode: 'markdown'
                 });
             } else {
                 await sendMessage(user.id, {
-                    text: 'No bus stops found near your location'
+                    text: 'No bus stops found near your location _(within 1km)_',
+                    parse_mode: 'markdown'
                 });
             }
         }
