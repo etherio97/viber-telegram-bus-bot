@@ -25,10 +25,7 @@ const findNearestStops = (params) =>
                 apikey: SUPABASE_SECRET
             }
         })
-        .then((response) => {
-            console.log(response);
-            return response.data;
-        });
+        .then(({ data }) => data);
 
 const sendMessage = (chat_id, payload = {}) =>
     axios
