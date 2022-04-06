@@ -165,7 +165,7 @@ const handleOnCallback = async ({ from, data }) => {
       let groups = {};
       let results = await findLinesByStop(id);
 
-      if (!results) {
+      if (!results || !results.length) {
         return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
       }
 
