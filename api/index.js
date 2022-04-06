@@ -177,16 +177,11 @@ const handleOnCallback = async ({ from, data }) => {
         groups[line_type].push({ line_id, line_type, stop_name, stop_id, ...line });
       });
 
-      await sendMessage(from.id, {
-        text: `မှတ်တိုင် *${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများမှာ -`,
-        parse_mode: 'markdown'
-      });
-
-      let text = '';
+      let text = `မှတ်တိုင် *${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများ\n`;
 
       for (let busLines of Object.values(groups)) {
-        let txt = `\\[ ${busLines[0].line_color}ရောင် ] လိုင်းနံပါတ်: `;
-        text += txt + busLines.map(m => `${toBurmeseNumber(m.line_id)}`).join(', ') + '\n\n';
+        let txt = `\\[${busLines[0].line_color}ရောင်] `;
+        text += txt + busLines.map(m => `${toBurmeseNumber(m.line_id)}`).join(', ') + '\n';
       }
 
       await sendMessage(from.id, {
