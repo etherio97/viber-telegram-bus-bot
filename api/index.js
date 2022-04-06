@@ -31,7 +31,7 @@ const LINE_TYPES = [
     line_name: 'မြို့တွင်းပတ်လိုင်းများ'
   }
 ];
-const { SUPABASE_URL, SUPABASE_SECRET, TELEGRAM_BOT_TOKEN, VIBER_BOT_TOKEN } = env;
+const { SUPABASE_URL, SUPABASE_SECRET, TELEGRAM_BOT_TOKEN, TELEGRAM_ADMIN } = env;
 
 const app = express();
 
@@ -249,9 +249,45 @@ const handleOnCallback = async ({ from, data }) => {
   }
 };
 
+const reportToAdmin = async (payload) => {
+  let type = 'unknown', user, data = '';
+  
+  if ('callback_data' in payload) {
+    let m = payload.callback_data.message;
+    user = m.from;
+    type = 'callback';
+    data = m.data;
+  } else if ('message' in payload) {
+    let m = payload.message;
+    user = m.from;
+    if ('sticker' in m) {
+      type = 'sticker';
+    } else if ('location' in m) {
+      type = 'location';
+      data = JSON.stringify(m.location);
+    } else if ('text' in m) {
+      if (m.substr(0, 1) === '/') {
+        type = 'command';
+      } else {
+        type = 'text';
+      }
+      data = m.text;
+    } else {
+      data = JSON.stringify(m);
+    }
+  }
+  
+  return sendMessage(TELEGRAM_ADMIN, {
+    text: `\\[_${type}_] ${user.first_name||''} ${user.last_name||''} @\`${user.username||user.id}\` *${data}*`,
+    parse_mode: 'markdown'
+  });
+};
 
 app.post('/api', json(), async (req, res) => {
   let { message, callback_query } = req.body;
+  
+  reportToAdmin(req.body).catch(e => null);
+  
   try {
     res.status(200);
     if (callback_query) {
