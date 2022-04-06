@@ -252,8 +252,8 @@ const handleOnCallback = async ({ from, data }) => {
 const reportToAdmin = async (payload) => {
   let type = 'unknown', user = {}, data = '';
   
-  if ('callback_data' in payload) {
-    let m = payload.callback_data.message;
+  if ('callback_query' in payload) {
+    let m = payload.callback_query.message;
     user = m.from;
     type = 'callback';
     data = m.data;
