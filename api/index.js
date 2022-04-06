@@ -57,9 +57,9 @@ const findNearestStops = (params) =>
     })
     .then(({ data }) => data);
 
-const findLinesByStop = (stop_id) =>
+const findLinesByStop = (stop_id_input) =>
   axios
-    .post(`${SUPABASE_URL}/rest/v1/rpc/find_lines_by_stop`, { stop_id }, {
+    .post(`${SUPABASE_URL}/rest/v1/rpc/find_lines_by_stop`, { stop_id_input }, {
       headers: {
         Authorization: `Bearer ${SUPABASE_SECRET}`,
         apikey: SUPABASE_SECRET
