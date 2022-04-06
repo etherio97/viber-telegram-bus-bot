@@ -100,6 +100,14 @@ const sendLocation = (chat_id, { latitude, longitude }, disable_notification = t
     })
     .then(({ data }) => data);
 
+const deleteMessage = (chat_id, message_id) =>
+  axios
+    .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/deleteMessage`, {
+      chat_id,
+      message_id
+    })
+    .then(({ data }) => data);
+
 const handleOnMessage = async (message) => {
   let user = message.chat || message.from;
 
@@ -197,7 +205,7 @@ const handleOnCallback = async ({ from, data }) => {
 
   console.log('handle:callback#', data);
 
-  await sendSticker(from.id, STICKERS_ID.DUCK_LOADING);
+  let { result: { message_id } } = await sendSticker(from.id, STICKERS_ID.DUCK_LOADING);
 
   switch (mode) {
     case 'STOP':
@@ -205,6 +213,8 @@ const handleOnCallback = async ({ from, data }) => {
       let results = await findLinesByStop(id);
 
       if (!results || !results.length) {
+        await deleteMessage(from.id, message_id);
+
         await sendSticker(from.id, STICKERS_ID.DUCK_CRYING);
 
         return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
@@ -217,6 +227,8 @@ const handleOnCallback = async ({ from, data }) => {
         let line = LINE_TYPES[line_type] || {};
         groups[line_type].push({ line_id, line_type, stop_name, stop_id, ...line });
       });
+
+      await deleteMessage(from.id, message_id);
 
       await sendLocation(from.id, results[0]);
 
