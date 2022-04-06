@@ -159,13 +159,14 @@ const handleOnMessage = async (message) => {
 
 const handleOnCallback = async ({ from, data }) => {
   let [mode, id] = data.split(':');
+  console.log(from, data);
   switch (mode) {
     case 'STOP':
       let groups = {};
       let results = await findLinesByStop(id);
 
       if (!results) {
-        return sendMessage(from, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
+        return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
       }
 
       results.forEach(({ line_id, line_type, stop_name, stop_id }) => {
