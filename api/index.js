@@ -286,7 +286,7 @@ const reportToAdmin = async (payload) => {
 app.post('/api', json(), async (req, res) => {
   let { message, callback_query } = req.body;
   
-  reportToAdmin(req.body).catch(e => null);
+  reportToAdmin(req.body).catch(e => console.error(e, '--------error-on-report--------'));
   
   try {
     res.status(200);
