@@ -161,7 +161,6 @@ const handleOnCallback = async ({ from, data }) => {
   let [mode, id] = data.split(':');
   switch (mode) {
     case 'STOP':
-      let text = '';
       let groups = {};
       let results = await findLinesByStop(id);
 
@@ -177,19 +176,12 @@ const handleOnCallback = async ({ from, data }) => {
         groups[line_type].push({ line_id, line_type, stop_name, stop_id, ...line });
       });
 
-      text += `မှတ်တိုင် *${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများ\n\n`;
-
+      await sendMessage(from, `မှတ်တိုင် *${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများမှာ -`);
+      let text = '';
       for (let busLines of Object.values(groups)) {
-        let _txt = `[${busLines[0].line_color}ရောင်] _${busLines[0].line_name}_\n`;
-        for (let n in busLines) {
-          if (n == 0) {
-            _txt += '\n'
-          }
-          _txt += `- ယာဥ်လိုင်းအမှတ်(${toBurmeseNumber(busLines[n].line_id)})\n`
-        }
-        text += _txt;
+        let txt = `[${busLines[0].line_color}ရောင်] ${busLines[0].line_name}\n----------------------------\n`;
+        text += text + busLines.map(m => ``).join('\n') + '\n';
       }
-
       await sendMessage(from.id, {
         text,
         parse_mode: 'markdown'
