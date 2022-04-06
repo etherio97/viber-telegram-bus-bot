@@ -109,7 +109,7 @@ const handleOnMessage = async (message) => {
     await sendSticker(user.id, STICKERS_ID.DUCK_WAVING);
 
     await sendMessage(user.id, {
-      text: 'ရန်ကုန်မြို့ရှိ ဘက်စ်ကားမှတ်တိုင်များကို စတင်ရှာဖွေရန် တည်နေရာပို့ပေးပါ...',
+      text: 'ရန်ကုန်မြို့ရှိ ဘက်စ်ကားမှတ်တိုင်များကို စတင်ရှာဖွေရန် တည်နေရာ:19ပို့ပေးပါ...',
       reply_markup: {
         keyboard: [
           [
@@ -186,6 +186,8 @@ const handleOnMessage = async (message) => {
         }
       });
     }
+  } else {
+    await sendSticker(user.id, STICKERS_ID.DUCK_EXPLODE);
   }
 };
 
@@ -194,7 +196,7 @@ const handleOnCallback = async ({ from, data }) => {
 
   console.log('handle:callback#', data);
 
-  await sendSticker(user.id, STICKERS_ID.DUCK_LOADING);
+  await sendSticker(from.id, STICKERS_ID.DUCK_LOADING);
 
   switch (mode) {
     case 'STOP':
@@ -202,7 +204,7 @@ const handleOnCallback = async ({ from, data }) => {
       let results = await findLinesByStop(id);
 
       if (!results || !results.length) {
-        await sendSticker(user.id, STICKERS_ID.DUCK_CRYING);
+        await sendSticker(from.id, STICKERS_ID.DUCK_CRYING);
 
         return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
       }
