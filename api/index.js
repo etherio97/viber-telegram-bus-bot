@@ -165,7 +165,7 @@ const handleOnCallback = async ({ from, data }) => {
       let groups = {};
       let results = await findLinesByStop(id);
 
-      if (!results || !results.length) {
+      if (!results || !results.lengthgp) {
         return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
       }
 
@@ -198,17 +198,17 @@ const handleOnCallback = async ({ from, data }) => {
 app.post('/api', json(), async (req, res) => {
   let { message, callback_query } = req.body;
   try {
+    res.status(200);
     if (callback_query) {
       await handleOnCallback(callback_query);
     } else if (message) {
       await handleOnMessage(message);
     }
-    res.status(204).end();
   } catch (e) {
     console.log(req.body);
     console.error(e);
-    res.status(201).end();
   }
+  res.end();
 });
 
 export default app;
