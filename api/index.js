@@ -4,6 +4,12 @@ import express, { json } from 'express';
 
 const R = 6371e3; // earth's mean radius in metres
 const BURMESE_NUBMERS = ['၀', '၁', '၂', '၃', '၄', '၅', '၆', '၇', '၈', '၉'];
+const STICKERS_ID = {
+  DUCK_CRYING: "CAACAgIAAxkBAAPaYk0r7UYBCfU_1-e6WwABgCRqMdKgAALzAANWnb0KahvrxMf6lv4jBA",
+  DUCK_WAVING: 'CAACAgIAAxkBAAPbYk0sQig1xFTyghrsLzXh7a1IzmkAAgEBAAJWnb0KIr6fDrjC5jQjBA',
+  DUCK_LOADING: 'CAACAgIAAxkBAAPdYk0sd33wiWhxWgOyfb2ztw7Rsm4AAgIBAAJWnb0KTuJsgctA5P8jBA',
+  DUCK_EXPLODE: 'CAACAgIAAxkBAAPeYk0smk3_5KODyuODCLHXqxlxeiEAAgsBAAJWnb0KTrHnpgj77UkjBA',
+}
 const LINE_TYPES = [
   {
     line_color: 'အပြာ',
@@ -75,11 +81,12 @@ const sendMessage = (chat_id, payload = {}) =>
     })
     .then(({ data }) => data);
 
-const sendSticker = (chat_id, payload = {}) =>
+const sendSticker = (chat_id, sticker, disable_notification = true) =>
   axios
     .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendSticker`, {
       chat_id,
-      ...payload
+      sticker,
+      disable_notification,
     })
     .then(({ data }) => data);
 
@@ -99,8 +106,10 @@ const handleOnMessage = async (message) => {
   message.sticker && console.log(message.sticker);
 
   if (message.text === '/start') {
+    await sendSticker(user.id, STICKERS_ID.DUCK_WAVING);
+
     await sendMessage(user.id, {
-      text: 'Send me your location to find nearest bus stops',
+      text: 'ရန်ကုန်မြို့ရှိ ဘက်စ်ကားမှတ်တိုင်များကို စတင်ရှာဖွေရန် တည်နေရာပို့ပေးပါ...',
       reply_markup: {
         keyboard: [
           [
@@ -161,6 +170,8 @@ const handleOnMessage = async (message) => {
     } else {
       let text = 'အနီးအနားတဝိုက်တွင် မှတ်တိုင်များရှာမတွေ့ပါ။';
 
+      await sendSticker(user.id, STICKERS_ID.DUCK_CRYING);
+
       await sendMessage(user.id, {
         text,
         parse_mode: 'markdown',
@@ -183,12 +194,16 @@ const handleOnCallback = async ({ from, data }) => {
 
   console.log('handle:callback#', data);
 
+  await sendSticker(user.id, STICKERS_ID.DUCK_LOADING);
+
   switch (mode) {
     case 'STOP':
       let groups = {};
       let results = await findLinesByStop(id);
 
       if (!results || !results.length) {
+        await sendSticker(user.id, STICKERS_ID.DUCK_CRYING);
+
         return sendMessage(from.id, { text: 'တစ်ခုခုမှားယွင်းနေပါတယ်...' });
       }
 
