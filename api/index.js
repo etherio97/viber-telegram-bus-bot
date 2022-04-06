@@ -78,7 +78,7 @@ app.post('/api', json(), async (req, res) => {
 
       if (results.length) {
         let _kbd = [];
-        let inline_keyboards = [];
+        let inline_keyboard = [];
         let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)} ခု ရှာတွေ့ပါတယ်။\n\n`;
 
         text += results.map(({ name, distance }, i) => {
@@ -93,7 +93,7 @@ app.post('/api', json(), async (req, res) => {
         results.forEach(({ name, id }) => {
           _kbd.push({ text: name, callback_data: `STOP:${id}` })
           if (_kbd.length >= 2) {
-            inline_keyboards.push(_kbd);
+            inline_keyboard.push(_kbd);
             _kbd = [];
           }
         })
@@ -102,7 +102,7 @@ app.post('/api', json(), async (req, res) => {
           text,
           parse_mode: 'markdown',
           reply_markup: {
-            inline_keyboards,
+            inline_keyboard,
           }
         });
       } else {
