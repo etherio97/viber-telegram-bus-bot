@@ -266,7 +266,7 @@ const reportToAdmin = async (payload) => {
       type = 'location';
       data = JSON.stringify(m.location);
     } else if ('text' in m) {
-      if (m.substr(0, 1) === '/') {
+      if (m.text.substr(0, 1) === '/') {
         type = 'command';
       } else {
         type = 'text';
