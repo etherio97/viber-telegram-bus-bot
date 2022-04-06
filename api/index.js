@@ -77,9 +77,17 @@ const sendMessage = (chat_id, payload = {}) =>
 
 const sendSticker = (chat_id, payload = {}) =>
   axios
-    .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendSticker`, {
       chat_id,
       ...payload
+    })
+    .then(({ data }) => data);
+
+const sendLocation = (chat_id, { latitude, longitude }) =>
+  axios
+    .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendLocation`, {
+      chat_id,
+      { latitude, longitude }
     })
     .then(({ data }) => data);
 
@@ -149,7 +157,7 @@ const handleOnMessage = async (message) => {
         }
       });
     } else {
-      let text = 'အနီးအနားတဝိုက်တွင် မှတ်တိုင်မရှိပါ။';
+      let text = 'အနီးအနားတဝိုက်တွင် မှတ်တိုင်များရှာမတွေ့ပါ။';
 
       await sendMessage(user.id, {
         text,
@@ -188,10 +196,12 @@ const handleOnCallback = async ({ from, data }) => {
         groups[line_type].push({ line_id, line_type, stop_name, stop_id, ...line });
       });
 
-      let text = `မှတ်တိုင် *${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများ\n`;
+      await sendLocation(from.id, results[0]);
+
+      let text = `*${results[0].stop_name}* သို့ရောက်ရှိသောယာဥ်လိုင်းများ\n`;
 
       for (let busLines of Object.values(groups)) {
-        let txt = `\\[${busLines[0].line_color}ရောင်] လိုင်းနံပါတ် : *`;
+        let txt = `\\[${busLines[0].line_color}ရောင်] ယာဥ်လိုင်းအမှတ်: *`;
         text += txt + busLines.map(m => `${toBurmeseNumber(m.line_id)}`).join('*, *') + '*\n';
       }
 
