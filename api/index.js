@@ -185,7 +185,7 @@ const handleOnCallback = async ({ from, data }) => {
       let text = '';
 
       for (let busLines of Object.values(groups)) {
-        let txt = `\\[ ${busLines[0].line_color}ရောင် \\] လိုင်းနံပါတ်: `;
+        let txt = `\\[ ${busLines[0].line_color}ရောင် ] လိုင်းနံပါတ်: `;
         text += txt + busLines.map(m => `${toBurmeseNumber(m.line_id)}`).join(', ') + '\n\n';
       }
 
