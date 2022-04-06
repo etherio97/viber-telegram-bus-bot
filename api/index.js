@@ -75,8 +75,19 @@ const sendMessage = (chat_id, payload = {}) =>
     })
     .then(({ data }) => data);
 
+const sendSticker = (chat_id, payload = {}) =>
+  axios
+    .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      chat_id,
+      ...payload
+    })
+    .then(({ data }) => data);
+
 const handleOnMessage = async (message) => {
   let user = message.chat || message.from;
+
+  message.sticker && console.log(message.sticker);
+
   if (message.text === '/start') {
     await sendMessage(user.id, {
       text: 'Send me your location to find nearest bus stops',
