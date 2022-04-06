@@ -188,6 +188,7 @@ const handleOnMessage = async (message) => {
     }
   } else {
     await sendSticker(user.id, STICKERS_ID.DUCK_EXPLODE);
+    await sendMessage(user.id, { text: 'နားမလည်ဘူးဗျ...' })
   }
 };
 
