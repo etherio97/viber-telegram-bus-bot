@@ -83,12 +83,13 @@ const sendSticker = (chat_id, payload = {}) =>
     })
     .then(({ data }) => data);
 
-const sendLocation = (chat_id, { latitude, longitude }) =>
+const sendLocation = (chat_id, { latitude, longitude }, disable_notification = true) =>
   axios
     .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendLocation`, {
       chat_id,
       latitude,
-      longitude
+      longitude,
+      disable_notification,
     })
     .then(({ data }) => data);
 
@@ -179,7 +180,9 @@ const handleOnMessage = async (message) => {
 
 const handleOnCallback = async ({ from, data }) => {
   let [mode, id] = data.split(':');
-  console.log(from, data);
+
+  console.log('handle:callback#', data);
+
   switch (mode) {
     case 'STOP':
       let groups = {};
