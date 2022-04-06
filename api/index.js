@@ -128,6 +128,7 @@ app.post('/api', json(), async (req, res) => {
 
     res.status(204).end();
   } catch (e) {
+    console.log(req.body);
     console.error(e);
     res.status(201).end();
   }
