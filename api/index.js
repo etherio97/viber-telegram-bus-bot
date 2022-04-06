@@ -82,8 +82,12 @@ app.post('/api', json(), async (req, res) => {
         let text = `မှတ်တိုင် ${toBurmeseNumber(results.length)} ခု ရှာတွေ့ပါတယ်။\n\n`;
 
         text += results.map(({ name, distance }, i) => {
-          if (distance > 999)
-            return `${toBurmeseNumber(1 + i)}။ *${name}*   _မီတာ ${toBurmeseNumber(distance.toFixed(0))} အကွာ_`
+          let unit = 'မီတာ';
+          if (distance > 999) {
+            distance = distance / 1000;
+            unit = 'ကီလိုမီတာ'
+          }
+          return `${toBurmeseNumber(1 + i)}။ *${name}*   _${unit} ${toBurmeseNumber(distance.toFixed(0))} အကွာ_`
         }).join('\n');
 
         results.forEach(({ name, id }) => {
