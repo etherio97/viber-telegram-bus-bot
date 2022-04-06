@@ -259,7 +259,7 @@ const reportToAdmin = async (payload) => {
     data = m.data;
   } else if ('message' in payload) {
     let m = payload.message;
-    user = m.from;
+    user = m.from || m.chat || {};
     if ('sticker' in m) {
       type = 'sticker';
     } else if ('location' in m) {
