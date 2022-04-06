@@ -250,7 +250,7 @@ const handleOnCallback = async ({ from, data }) => {
 };
 
 const reportToAdmin = async (payload) => {
-  let type = 'unknown', user = {}, data = '';
+  let type = 'unknown', user, data = '';
   
   if ('callback_query' in payload) {
     let m = payload.callback_query.message;
@@ -278,7 +278,7 @@ const reportToAdmin = async (payload) => {
   }
   
   return sendMessage(TELEGRAM_ADMIN, {
-    text: `\\[_${type}_] ${user?.first_name||''} ${user?.last_name||''} @\`${user?.username||user?.id}\` *${data}*`,
+    text: user ? `\\[_${type}_] ${user.first_name||''} ${user.last_name||''} @\`${user.username||user.id}\` *${data}*` : JSON.stringify(payload),
     parse_mode: 'markdown'
   });
 };
