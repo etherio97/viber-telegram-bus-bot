@@ -87,7 +87,8 @@ const sendLocation = (chat_id, { latitude, longitude }) =>
   axios
     .post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendLocation`, {
       chat_id,
-      { latitude, longitude }
+      latitude,
+      longitude
     })
     .then(({ data }) => data);
 
