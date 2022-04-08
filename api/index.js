@@ -1,10 +1,5 @@
 import express, { json } from 'express';
-import {
-  reportToAdmin,
-  toBurmeseNumber,
-  calculateDistance,
-  getRadius,
-} from '../src/utils';
+import { toBurmeseNumber, calculateDistance, getRadius } from '../src/utils';
 import { LINE_TYPES, findLinesByStop, findNearestStops } from '../src/bus';
 import {
   STICKERS_ID,
