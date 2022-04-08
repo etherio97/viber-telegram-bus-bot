@@ -1,6 +1,6 @@
-import { rpc } from './supabase';
+const { rpc } = require('./supabase');
 
-export const LINE_TYPES = [
+const LINE_TYPES = [
   {
     line_color: 'အပြာ',
     line_name: 'မြောက်ပိုင်းခရိုင် အခြေပြု ယာဉ်လိုင်းများ',
@@ -23,7 +23,13 @@ export const LINE_TYPES = [
   },
 ];
 
-export const findNearestStops = (params) => rpc('find_nearest_stops', params);
+const findNearestStops = (params) => rpc('find_nearest_stops', params);
 
-export const findLinesByStop = (stop_id_input) =>
+const findLinesByStop = (stop_id_input) =>
   rpc('find_lines_by_stop', { stop_id_input });
+
+module.exports = {
+  LINE_TYPES,
+  findNearestStops,
+  findLinesByStop,
+};

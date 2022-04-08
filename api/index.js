@@ -1,16 +1,18 @@
-import express, { json } from 'express';
-import { toBurmeseNumber, calculateDistance, getRadius } from './_src/utils';
-import { LINE_TYPES, findLinesByStop, findNearestStops } from './_src/bus';
-import {
+const express = require('express');
+const {
+  toBurmeseNumber,
+  calculateDistance,
+  getRadius,
+} = require('../src/utils');
+const { LINE_TYPES, findLinesByStop, findNearestStops } = require('../src/bus');
+const {
   STICKERS_ID,
   deleteMessage,
   reportToAdmin,
   sendLocation,
   sendMessage,
   sendSticker,
-} from './_src/telegram';
-
-const app = express();
+} = require('../src/telegram');
 
 const handleOnMessage = async (message) => {
   let user = message.chat || message.from;
@@ -169,7 +171,9 @@ const handleOnCallback = async ({ from, data }) => {
   }
 };
 
-app.post('/api', json(), async (req, res) => {
+const app = express();
+
+app.post('/api', express.json(), async (req, res) => {
   let { message, callback_query } = req.body;
 
   reportToAdmin(req.body).catch((e) =>
@@ -190,4 +194,4 @@ app.post('/api', json(), async (req, res) => {
   res.end();
 });
 
-export default app;
+module.exports = app;

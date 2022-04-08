@@ -1,4 +1,5 @@
-import { env } from 'process';
+const { env } = require('process');
+const { default: axios } = require('axios');
 
 export const rpc = (fn, data) =>
   axios

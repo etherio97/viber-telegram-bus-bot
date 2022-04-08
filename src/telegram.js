@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { env } from 'process';
+const { env } = require('process');
+const { default: axios } = require('axios');
 
-export const STICKERS_ID = {
+const STICKERS_ID = {
   DUCK_CRYING:
     'CAACAgIAAxkBAAPaYk0r7UYBCfU_1-e6WwABgCRqMdKgAALzAANWnb0KahvrxMf6lv4jBA',
   DUCK_WAVING:
@@ -12,18 +12,18 @@ export const STICKERS_ID = {
     'CAACAgIAAxkBAAPeYk0smk3_5KODyuODCLHXqxlxeiEAAgsBAAJWnb0KTrHnpgj77UkjBA',
 };
 
-export const requestApi = (path, data) =>
+const requestApi = (path, data) =>
   axios
     .post(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${path}`, data)
     .then(({ data }) => data);
 
-export const sendMessage = (chat_id, payload = {}) =>
+const sendMessage = (chat_id, payload = {}) =>
   requestApi('sendMessage', { chat_id, ...payload });
 
-export const sendSticker = (chat_id, sticker, disable_notification = true) =>
+const sendSticker = (chat_id, sticker, disable_notification = true) =>
   requestApi('sendSticker', { chat_id, sticker, disable_notification });
 
-export const sendLocation = (
+const sendLocation = (
   chat_id,
   { latitude, longitude },
   disable_notification = true
@@ -35,13 +35,13 @@ export const sendLocation = (
     disable_notification,
   });
 
-export const deleteMessage = (chat_id, message_id) =>
+const deleteMessage = (chat_id, message_id) =>
   requestApi('deleteMessage', {
     chat_id,
     message_id,
   });
 
-export const reportToAdmin = async (payload) => {
+const reportToAdmin = async (payload) => {
   let type = 'unknown',
     user,
     data = '';
@@ -79,4 +79,13 @@ export const reportToAdmin = async (payload) => {
       : JSON.stringify(payload),
     parse_mode: 'markdown',
   });
+};
+
+module.exports = {
+  STICKERS_ID,
+  deleteMessage,
+  reportToAdmin,
+  sendLocation,
+  sendMessage,
+  sendSticker,
 };
