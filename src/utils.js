@@ -28,7 +28,7 @@ const getRadius = (radius, { latitude, longitude }) => ({
     ((radius / R) * 180) / Math.PI / Math.cos((latitude * Math.PI) / 180),
 });
 
-modules.exports = {
+module.exports = {
   toBurmeseNumber,
   calculateDistance,
   getRadius,

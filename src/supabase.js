@@ -1,7 +1,7 @@
 const { env } = require('process');
 const { default: axios } = require('axios');
 
-export const rpc = (fn, data) =>
+const rpc = (fn, data) =>
   axios
     .post(`${env.SUPABASE_URL}/rest/v1/rpc/${fn}`, data, {
       headers: {
@@ -10,3 +10,5 @@ export const rpc = (fn, data) =>
       },
     })
     .then(({ data }) => data);
+
+module.exports = { rpc };
