@@ -1,6 +1,6 @@
 import express, { json } from 'express';
-import { toBurmeseNumber, calculateDistance, getRadius } from '../src/utils';
-import { LINE_TYPES, findLinesByStop, findNearestStops } from '../src/bus';
+import { toBurmeseNumber, calculateDistance, getRadius } from './_src/utils';
+import { LINE_TYPES, findLinesByStop, findNearestStops } from './_src/bus';
 import {
   STICKERS_ID,
   deleteMessage,
@@ -8,7 +8,7 @@ import {
   sendLocation,
   sendMessage,
   sendSticker,
-} from '../src/telegram';
+} from './_src/telegram';
 
 const app = express();
 
