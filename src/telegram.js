@@ -71,7 +71,7 @@ const reportToAdmin = async (payload) => {
     }
   }
 
-  return sendMessage(TELEGRAM_ADMIN, {
+  return sendMessage(env.TELEGRAM_ADMIN, {
     text: user
       ? `\\[_${type}_] ${user.first_name || ''} ${user.last_name || ''} @\`${
           user.username || user.id
