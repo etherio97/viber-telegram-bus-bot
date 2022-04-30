@@ -1,0 +1,7 @@
+{
+  "routes": [
+    {
+      "source": "/web/messenger(.*)",
+      "destination": "/api/messenger",
+    }
+  ]

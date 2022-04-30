@@ -8,7 +8,7 @@ const { LINE_TYPES, findLinesByStop, findNearestStops } = require('../src/bus');
 
 const app = express();
 
-app.get("/api/messenger/webhook", (req, res) => {
+app.get("/messenger/webhook", (req, res) => {
   let mode = req.query["hub.mode"];
   let token = req.query["hub.verify_token"];
   let challenge = req.query["hub.challenge"];
@@ -21,8 +21,8 @@ app.get("/api/messenger/webhook", (req, res) => {
   res.status(200).send(challenge);
 });
 
-app.post('/api/messenger/webhook', express.json(), async (req, res) => {
-   console.log(req.body);
+app.post('/messenger/webhook', express.json(), async (req, res) => {
+  console.log(req.body);
   res.status(204);
   res.end();
 });
