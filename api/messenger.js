@@ -20,7 +20,7 @@ app.get("/messenger/webhook", (req, res) => {
   }
   if (!(mode === 'subscribe' && token === 'secret')) {
     res.status(403);
-    res.send('invalid mode pr token');
+    res.send('invalid mode or token');
     res.end();
     return;
   }
@@ -29,9 +29,17 @@ app.get("/messenger/webhook", (req, res) => {
 });
 
 app.post('/messenger/webhook', express.json(), async (req, res) => {
-  console.log(req.body);
-  res.status(204);
-  res.end();
+  const { object, entry } = req.body;
+  if (object !== 'page') {
+    return res.status(400).json({
+      error: 'invalid webhook object',
+    })
+  }
+  res.status(204).end();
+  for (let payload of entry) {
+    const { messaging } = payload;
+    console.log(...messaging);
+  }
 });
 
 module.exports = app;
