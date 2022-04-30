@@ -8,6 +8,7 @@ const { LINE_TYPES, findLinesByStop, findNearestStops } = require('../src/bus');
 const { sendTextMessage, sendQuickReply, QuickReply } = require('../src/messenger');
 
 const handleOnPostback = async (sender, { payload }) => {
+  console.log('handle:postback', sender);
   switch(payload) {
     case 'START':
       await sendTextMessage(sender.id, 'ရန်ကုန်မြို့ရှိ ဘက်စ်ကားမှတ်တိုင်များကို ရှာဖွေပါ...');
@@ -19,7 +20,7 @@ const handleOnPostback = async (sender, { payload }) => {
 };
 
 const handleOnMessage = async (sender, { text }) => {
-  
+  console.log('handle:message', sender);
   //--- end ---
 };
 
@@ -34,9 +35,9 @@ app.post('/messenger/webhook', express.json(), async (req, res) => {
   }
   res.status(204).end();
 
-  for (let payload of entry) {
-    const data = payload.messaging[0];
-    if ('postback' in data) {
+  for (let each of entry) {
+    let data = each.messaging[0];
+    if (data.postback) {
       await handleOnPostback(data.sender, data.postback);
     } else {
       await handleOnMessage(data.sender, data.message);
