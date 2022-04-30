@@ -4,6 +4,10 @@
     {
       "source": "/messenger/(.*)",
       "destination": "/api/messenger"
+    },
+    {
+      "source": "/api(.*)",
+      "destination": "/api/index"
     }
   ]
 }
