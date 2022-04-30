@@ -1,7 +1,8 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "source": "/web/messenger(.*)",
-      "destination": "/api/messenger",
+      "source": "/messenger/(.*)",
+      "destination": "/api/messenger"
     }
   ]
+}
