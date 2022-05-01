@@ -38,17 +38,17 @@ router.get('/near-me', async (req, res) => {
 });
 
 router.get('/lines', async (req, res) => {
-  let results = await getBusLines();
-  res.json(results);
-});
-
-router.get('/stops', async (req, res) => {
-  let results = (await getBusStops())
+  let results = (await getBusLines())
     .map((value) => ({
       ...value,
       line: LINE_TYPES[value.line_type],
       line_type: undefined,
     }));
+  res.json(results);
+});
+
+router.get('/stops', async (req, res) => {
+  let results = await getBusStops();
   res.json(results);
 });
 
