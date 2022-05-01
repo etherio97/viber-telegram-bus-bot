@@ -47,7 +47,7 @@ router.get('/:stop_id/lines', async (req, res) => {
 })
 
 router.get('/:line_id/stops', async (req, res) => {
-  let { line } = req.params;
+  let { line_id } = req.params;
   let results = (await findStopsByLine(line_id))
     .map((value) => ({
       ...value,
