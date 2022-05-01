@@ -42,7 +42,6 @@ router.get('/lines', async (req, res) => {
     .map((value) => ({
       ...value,
       ...(LINE_TYPES[value.type] || {}),
-      type: undefined,
     }));
   res.json(results);
 });
@@ -57,8 +56,7 @@ router.get('/:stop_id/lines', async (req, res) => {
   let results = (await findLinesByStop(stop_id))
     .map((value) => ({
       ...value,
-      line: LINE_TYPES[value.line_type],
-      line_type: undefined,
+      ...(LINE_TYPES[value.line_type] || {}),
     }));
   res.json(results);
 })
@@ -68,8 +66,7 @@ router.get('/:line_id/stops', async (req, res) => {
   let results = (await findStopsByLine(line_id))
     .map((value) => ({
       ...value,
-      line: LINE_TYPES[value.line_type],
-      line_type: undefined,
+      ...(LINE_TYPES[value.line_type] || {}),
     }));
   res.json(results);
 })

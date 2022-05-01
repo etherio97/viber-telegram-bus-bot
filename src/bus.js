@@ -7,22 +7,27 @@ const LINE_TYPES = [
   {
     line_color: 'အပြာ',
     line_name: 'မြောက်ပိုင်းခရိုင် အခြေပြု ယာဉ်လိုင်းများ',
+    color_code: 'blue',
   },
   {
     line_color: 'အနီ',
     line_name: 'အရှေ့ပိုင်းရိုင် အခြေပြု ယာဉ်လိုင်းများ',
+    color_code: 'red'
   },
   {
     line_color: 'ခရမ်း',
     line_name: 'တောင်ပိုင်းခရိုင် အခြေပြု ယာဉ်လိုင်းများ',
+    color_code: 'purple',
   },
   {
     line_color: 'အစိမ်း',
     line_name: 'ပင်မလမ်းနဲ့ ချိတ်ဆက်သည့် ယာဉ်လိုင်းများ',
+    color_code: 'green',
   },
   {
     line_color: 'အညို',
     line_name: 'မြို့တွင်းပတ်လိုင်းများ',
+    color_code: 'brown',
   },
 ];
 
