@@ -8,6 +8,7 @@ const {
   LINE_TYPES, 
   findLinesByStop, 
   findNearestStops,
+  searchStopsByName,
 } = require('./bus');
 
 const {
@@ -20,7 +21,6 @@ const {
 
 const handleOnMessage = async (message) => {
   let user = message.chat || message.from;
-
   if (message.text === '/start') {
     await sendSticker(user.id, STICKERS_ID.DUCK_WAVING);
 
@@ -37,7 +37,6 @@ const handleOnMessage = async (message) => {
     let coords = message.location;
     let params = getRadius(1200, coords);
     let results = await findNearestStops(params);
-
     results = results
       .map((result) => ({
         ...result,
@@ -45,21 +44,12 @@ const handleOnMessage = async (message) => {
       }))
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 5);
-
-    console.log(
-      'lat:%s, lng:%s (%d) stops',
-      coords.latitude,
-      coords.latitude,
-      results.length
-    );
-
     if (results.length) {
       let _kbd = [];
       let inline_keyboard = [];
       let text = `မှတ်တိုင် ${toBurmeseNumber(
         results.length
       )} ခု ရှာတွေ့ပါတယ်။\n\n`;
-
       text += results
         .map(({ name, distance }, i) => {
           let unit = 'မီတာ';
@@ -74,7 +64,6 @@ const handleOnMessage = async (message) => {
           )} အကွာ_`;
         })
         .join('\n');
-
       results.forEach(({ name, id }) => {
         _kbd.push({ text: name, callback_data: `STOP:${id}` });
         if (_kbd.length >= 2) {
@@ -82,11 +71,9 @@ const handleOnMessage = async (message) => {
           _kbd = [];
         }
       });
-
       if (_kbd.length) {
         inline_keyboard.push(_kbd);
       }
-
       await sendMessage(user.id, {
         text,
         parse_mode: 'markdown',
@@ -96,9 +83,7 @@ const handleOnMessage = async (message) => {
       });
     } else {
       let text = 'အနီးအနားတဝိုက်တွင် မှတ်တိုင်များရှာမတွေ့ပါ။';
-
       await sendSticker(user.id, STICKERS_ID.DUCK_SEARCHING);
-
       await sendMessage(user.id, {
         text,
         parse_mode: 'markdown',
@@ -110,8 +95,49 @@ const handleOnMessage = async (message) => {
       });
     }
   } else {
-    await sendSticker(user.id, STICKERS_ID.DUCK_NOT_UNDERSTAND);
-    await sendMessage(user.id, { text: 'နားမလည်ဘူးဗျ...' });
+    if (message.text?.match(/[က-၏]{3,}/)) {
+      let results = await searchStopsByName('%' + message.text.trim() + '%');
+      if (results.length) {
+        let _kbd = [];
+        let inline_keyboard = [];
+        let text = results
+          .map(({ name }, i) => `(${toBurmeseNumber(i+1)}) ${name}`)
+          .join('\n');
+        results
+          .forEach(({ name, id }) => {
+            _kbd.push({ text: name, callback_data: `STOP:${id}` });
+            if (_kbd.length >= 2) {
+              inline_keyboard.push(_kbd);
+              _kbd = [];
+            }
+          });
+        if (_kbd.length) {
+          inline_keyboard.push(_kbd);
+        }
+        await sendMessage(user.id, {
+          text,
+          parse_mode: 'markdown',
+          reply_markup: {
+          inline_keyboard,
+          },
+        });
+      } else {
+        let text = 'သင်ရှာဖွေနေသော မှတ်တိုင်ကို ရှာမတွေ့ပါ။';
+        await sendSticker(user.id, STICKERS_ID.DUCK_SEARCHING);
+        await sendMessage(user.id, {
+          text,
+          parse_mode: 'markdown',
+          reply_markup: {
+            keyboard: [[{ text: 'Send Location', request_location: true }]],
+            resize_keyboard: true,
+            one_time_keyboard: true,
+          },
+        });
+      }
+    } else {
+      await sendSticker(user.id, STICKERS_ID.DUCK_NOT_UNDERSTAND);
+      await sendMessage(user.id, { text: 'နားမလည်ဘူးဗျ...' });
+    }
   }
 };
 

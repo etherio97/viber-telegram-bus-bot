@@ -31,25 +31,24 @@ const LINE_TYPES = [
   },
 ];
 
+const getBusLines = () => request('GET', 'ygn_bus_lines');
+
+const getBusStops = () => request('GET', 'ygn_bus_stops', { select: '*' });
+
+const searchStopsByName = (name_input) => rpc('search_stops_by_name', { name_input });
+
 const findNearestStops = (params) => rpc('find_nearest_stops', params);
 
-const findLinesByStop = (stop_id_input) =>
-  rpc('find_lines_by_stop', { stop_id_input });
+const findLinesByStop = (stop_id_input) => rpc('find_lines_by_stop', { stop_id_input });
 
-const findStopsByLine = (line_id_input) => 
-  rpc('find_stops_by_line', { line_id_input });
-
-const getBusLines = () =>
-  request('GET', 'ygn_bus_lines');
-  
-const getBusStops = () =>
-  request('GET', 'ygn_bus_stops', { select: '*' });
+const findStopsByLine = (line_id_input) => rpc('find_stops_by_line', { line_id_input });
 
 module.exports = {
   LINE_TYPES,
+  getBusLines,
+  getBusStops,
+  searchStopsByName,
   findNearestStops,
   findLinesByStop,
   findStopsByLine,
-  getBusLines,
-  getBusStops,
 };
