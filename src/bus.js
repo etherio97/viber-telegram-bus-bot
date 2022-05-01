@@ -28,8 +28,12 @@ const findNearestStops = (params) => rpc('find_nearest_stops', params);
 const findLinesByStop = (stop_id_input) =>
   rpc('find_lines_by_stop', { stop_id_input });
 
+const findStopsByLine = (line_id_input) => 
+  rpc('find_stops_by_lines', { line_id_input });
+
 module.exports = {
   LINE_TYPES,
   findNearestStops,
   findLinesByStop,
+  findStopsByLine,
 };

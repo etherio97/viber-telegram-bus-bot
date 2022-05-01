@@ -12,6 +12,7 @@ const {
   LINE_TYPES,
   findLinesByStop,
   findNearestStops,
+  findStopsByLine
 } = require('../../src/bus');
 
 const router = createRouter('/v1/yangon-bus');
@@ -34,9 +35,20 @@ router.get('/near-me', async (req, res) => {
   res.json(results);
 });
 
-router.get('/:id/lines', async (req, res) => {
-  let { id } = req.params;
-  let results = (await findLinesByStop(id))
+router.get('/:stop/lines', async (req, res) => {
+  let { stop } = req.params;
+  let results = (await findLinesByStop(stop))
+    .map((value) => ({
+      ...value,
+      line: LINE_TYPES[value.line_type],
+      line_type: undefined,
+    }));
+  res.json(results);
+})
+
+router.get('/:line/stops', async (req, res) => {
+  let { line } = req.params;
+  let results = (await findStopsByLine(line))
     .map((value) => ({
       ...value,
       line: LINE_TYPES[value.line_type],
