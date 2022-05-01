@@ -35,9 +35,9 @@ router.get('/near-me', async (req, res) => {
   res.json(results);
 });
 
-router.get('/:stop/lines', async (req, res) => {
-  let { stop } = req.params;
-  let results = (await findLinesByStop(stop))
+router.get('/:stop_id/lines', async (req, res) => {
+  let { stop_id } = req.params;
+  let results = (await findLinesByStop(stop_id))
     .map((value) => ({
       ...value,
       line: LINE_TYPES[value.line_type],
@@ -46,9 +46,9 @@ router.get('/:stop/lines', async (req, res) => {
   res.json(results);
 })
 
-router.get('/:line/stops', async (req, res) => {
+router.get('/:line_id/stops', async (req, res) => {
   let { line } = req.params;
-  let results = (await findStopsByLine(line))
+  let results = (await findStopsByLine(line_id))
     .map((value) => ({
       ...value,
       line: LINE_TYPES[value.line_type],
