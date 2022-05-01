@@ -1,11 +1,16 @@
-const app = require('../src/app');
+const {
+  app, 
+  createRouter,
+} = require('../../src/app');
 
 const {
   handleOnMessage,
   handleOnCallback,
-} = require('../src/handle');
+} = require('../../src/handle');
 
-app.post('/api', async (req, res) => {
+const router = createRouter('/api/webhook/telegram');
+
+router.post('/', async (req, res) => {
   let { message, callback_query } = req.body;
   try {
     res.status(200);
