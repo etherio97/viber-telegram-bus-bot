@@ -8,7 +8,7 @@ const {
   handleOnCallback,
 } = require('../../src/handle');
 
-const router = createRouter('/api/webhook/telegram');
+const router = createRouter('/webhook/telegram');
 
 router.post('/', async (req, res) => {
   let { message, callback_query } = req.body;

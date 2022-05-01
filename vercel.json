@@ -2,12 +2,16 @@
   "public":true,
   "rewrites": [
     {
-      "source": "/messenger/(.*)",
-      "destination": "/api/messenger"
+      "source": "/v1/yangon-bus/(.*)",
+      "destination": "/api/v1/yangon-bus"
     },
     {
-      "source": "/api(.*)",
-      "destination": "/api/index"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/$1"
     }
   ]
 }
