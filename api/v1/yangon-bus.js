@@ -41,8 +41,8 @@ router.get('/lines', async (req, res) => {
   let results = (await getBusLines())
     .map((value) => ({
       ...value,
-      line: LINE_TYPES[value.line_type],
-      line_type: undefined,
+      ...(LINE_TYPES[value.type] || {}),
+      type: undefined,
     }));
   res.json(results);
 });
