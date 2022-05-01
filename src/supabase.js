@@ -4,27 +4,21 @@ const { default: axios } = require('axios');
 const qs = (params) =>
    new URLSearchParams(params).toString();
 
-const rpc = (fn, data) =>
-  axios
-    .post(`${env.SUPABASE_URL}/rest/v1/rpc/${fn}`, data, {
-      headers: {
-        Authorization: `Bearer ${env.SUPABASE_SECRET}`,
-        apikey: env.SUPABASE_SECRET,
-      },
-    })
-    .then(({ data }) => data);
-
-const request = (method, path, params = {}, headers = {}) =>
+const request = (method, path, params = {}, data = null, headers = {}) =>
   axios({
     method,
-    url: `${SUPABASE_URL}/rest/v1/${path}?${qs(params)}`,
+    url: `${env.SUPABASE_URL}/rest/v1/${path}?${qs(params)}`,
     headers: {
       Authorization: `Bearer ${env.SUPABASE_SECRET}`,
       apikey: env.SUPABASE_SECRET,
       ...headers,
     },
+    data,
   })
   .then(({ data }) => data);
+
+const rpc = (fn, data) =>
+  request('POST', ['rpc', fn].join('/'), {}, data);
 
 module.exports = {
   rpc,
