@@ -1,4 +1,7 @@
-const { rpc } = require('./supabase');
+const { 
+  rpc,
+  request,
+} = require('./supabase');
 
 const LINE_TYPES = [
   {
@@ -31,9 +34,17 @@ const findLinesByStop = (stop_id_input) =>
 const findStopsByLine = (line_id_input) => 
   rpc('find_stops_by_line', { line_id_input });
 
+const getBusLines = () =>
+  request('GET', 'ygn_bus_lines');
+  
+const getBusStops = () =>
+  request('GET', 'ygn_bus_stops', { select: '*' });
+
 module.exports = {
   LINE_TYPES,
   findNearestStops,
   findLinesByStop,
   findStopsByLine,
+  getBusLines,
+  getBusStops,
 };
