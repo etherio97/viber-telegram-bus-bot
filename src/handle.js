@@ -97,7 +97,7 @@ const handleOnMessage = async (message) => {
     } else {
       let text = 'အနီးအနားတဝိုက်တွင် မှတ်တိုင်များရှာမတွေ့ပါ။';
 
-      await sendSticker(user.id, STICKERS_ID.DUCK_CRYING);
+      await sendSticker(user.id, STICKERS_ID.DUCK_SEARCHING);
 
       await sendMessage(user.id, {
         text,
@@ -110,7 +110,7 @@ const handleOnMessage = async (message) => {
       });
     }
   } else {
-    await sendSticker(user.id, STICKERS_ID.DUCK_EXPLODE);
+    await sendSticker(user.id, STICKERS_ID.DUCK_NOT_UNDERSTAND);
     await sendMessage(user.id, { text: 'နားမလည်ဘူးဗျ...' });
   }
 };

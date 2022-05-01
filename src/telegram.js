@@ -10,6 +10,10 @@ const STICKERS_ID = {
     'CAACAgIAAxkBAAPdYk0sd33wiWhxWgOyfb2ztw7Rsm4AAgIBAAJWnb0KTuJsgctA5P8jBA',
   DUCK_EXPLODE:
     'CAACAgIAAxkBAAPeYk0smk3_5KODyuODCLHXqxlxeiEAAgsBAAJWnb0KTrHnpgj77UkjBA',
+  DUCK_SEARCHING:
+    'CAACAgIAAxkBAAMmYm6zUoAGSTYf7RhAXEp9xmSIDhUAAv0OAAJe-WlLbcX06ezev3skBA',
+  DUCK_NOT_UNDERSTAND:
+    'CAACAgIAAxkBAAMoYm60UtvIgv5wpdWnAu4gGfgMysIAAvkAA1advQqVZW6rKisbNiQE',
 };
 
 const requestApi = (path, data) =>
