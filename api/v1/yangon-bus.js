@@ -24,14 +24,15 @@ router.get('/near-me', async (req, res) => {
   if (!(latitude && longitude)) {
     return res.status(404).send('required arguments: latitude, longitude');
   }
-  if (radius && radius > 5000) {
-    return res.status(404).send('invalid argument: radius must be under 5000 meters');
-  }
-  let params = getRadius(radius || 1000, { latitude, longitude });
+  let coords = {
+    latitude: parseFloat(latitude),
+    longitude: parseFloat(longitude),
+  };
+  let params = getRadius(parseInt(radius) || 1000, coords);
   let results = (await findNearestStops(params))
     .map((result) => ({
       ...result,
-      distance: calculateDistance(result, { latitude, longitude }),
+      distance: calculateDistance(result, coords),
     }))
     .sort((a, b) => a.distance - b.distance);
   res.json(results);
